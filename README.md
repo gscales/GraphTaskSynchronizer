@@ -353,20 +353,6 @@ public interface ITaskChangeSink
 first) and where the values came from. The console reporter is the only sink registered by
 default; add yours to the list in `Program.cs`. Sinks run on the single consumer, in order.
 
-### What changed from DeletedItemWatcher
-
-| DeletedItemWatcher | Task Synchronizer |
-|---|---|
-| Message subscriptions with rich (encrypted) payloads | Basic todoTask subscriptions per To Do list; each notification triggers a GET |
-| Graph .NET SDK | Graph REST (`GraphRestClient`: bearer auth, paging, retry with Retry-After) |
-| `$expand` of LAPFID / submit / creation time | `$expand` of PercentComplete only; everything else from typed To Do properties |
-| ItemCache, FolderCache, LAPFID resolution | TaskStore (persistent replica, ordering guard), TodoListResolver |
-| Encryption certificate (PFX) | None needed |
-| — | Reconcile with todoTask delta (startup / periodic / lifecycle; full rounds when needed) and lifecycle notifications |
-| `translateExchangeIds` (its README listed Mail.ReadWrite for it) | `translateExchangeIds` for immutable task IDs, to recognise moves between lists — needs User.Read.All as an application permission |
-| Notification handler returned `Task<IResult>` from a `(HttpContext)` lambda, which binds as a `RequestDelegate` — the result is discarded (ASP0016), so every POST got 200 and errors never became 500 | Handler sets 202 / 500 on the response directly |
-
----
 
 ## Prerequisites
 
